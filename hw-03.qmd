@@ -102,7 +102,7 @@ summary(spammer)
 
 ### **Create a Full Tree**
 
--   In order to produce a complete tree, we set the minimum number of observations in a node required to split to the least value of 2 and set the complexity parameter cp to 0 (split even if it does not improve the tree). Take note: training data was overfit by entire trees!
+-   In order to produce a complete tree, we set the minimum number of observations in a node required to split to the least value of 2 and set the complexity parameter cp to 0 (split even if it does not improve the tree).
 
     ```{r}
     tree_full <- spammer |>
@@ -205,7 +205,7 @@ summary(spammer)
 
 ## **Model Evaluation with Caret:**
 
--   Preparing training sets, creating classification (and regression) models, and conducting evaluations are all made simpler by the package caret. This is an excellent cheat sheet.
+-   Preparing training sets, creating classification (and regression) models, and conducting evaluations are all made simpler by the package caret.
 
     ```{r}
     library(caret)
@@ -229,7 +229,7 @@ summary(spammer)
 
 #### Hold out Test Data
 
--   Test data is kept separate and used just for model testing; it is not utilized throughout the model-building process. Here, we divide the data into 20% for testing and 80% for training.
+-   Test data is kept separate and used just for model testing; it is not utilized throughout the model-building process. Here, we are dividing the data into 80% for training and 20% for testing.
 
     ```{r}
     unique(spammer$yesno)
@@ -246,7 +246,7 @@ summary(spammer)
 
 ### **Learn a Model and Tune Hyperparameters on the Training Data**
 
-A single method called train() from the caret package handles both training and validation for hyperparameter adjustment. It will provide you error estimates for various hyperparameter settings by internally dividing the data into training and validation sets. TrainControl is used to select the testing strategy.
+A single method called **train()** from the **caret** package handles both training and validation for hyperparameter adjustment. It will provide you error estimates for various hyperparameter settings by internally dividing the data into training and validation sets. **trainControl** is used to select the testing strategy.
 
 ```{r}
 fit <- spammer_train |>
@@ -260,7 +260,7 @@ fit <- spammer_train |>
 fit
 ```
 
--   Fit\$finalModel is a model that makes use of all the data provided to train() and the optimal tuning parameters.
+-   **fit\$finalModel** is a model that makes use of all the data provided to **train()** and the optimal tuning parameters.
 
     ```{r}
     rpart.plot(fit$finalModel, extra = 2,
@@ -289,7 +289,7 @@ fit
     pred
     ```
 
--   Accuracy, confidence intervals, kappa, and numerous other evaluation metrics can be computed using Caret's confusionMatrix() method. A confusion matrix based on the generalization error must be created using distinct test data.
+-   "**confusionMatrix()**" function allows us to compute accuracy, confidence intervals, kappa, and numerous other evaluation metrics.
 
     ```{r}
     confusionMatrix(data = pred, 
@@ -298,19 +298,17 @@ fit
 
     #### **Some notes**
 
--   Missing values are a problem for many classification algorithms and train in caret. Use na.action = na.pass when calling train and predict if your classification model can handle missing values (e.g., rpart). If not, before training the model, you must use na.omit to delete observations with missing values or imputation to replace the missing values. Verify if there are still sufficient observations available.
+-   Several classification algorithms in caret do not handle missing values effectively. If your classification model can handle missing values (such as rpart), use 'na.action = na.pass' when calling the 'train' and 'predict' functions. Otherwise, you should either remove observations with missing values using 'na.omit' or use imputation techniques to replace missing values before training the model. It's essential to ensure that you retain a sufficient number of observations after handling missing values.
 
--   Ensure that variables that are nominal, such as logical variables, are coded as factors.
+-   Additionally, nominal variables, including logical variables, should be coded as factors. The class variable for 'train' in caret must not have level names that are reserved keywords in R (e.g., TRUE and FALSE). Consider renaming them, for instance, to 'yes' and 'no.'
 
--   R keywords, such as TRUE and FALSE, cannot appear in the level names of the class variable for train in Caret. Change their name to something like "yes" and "no."
+-   Ensure that examples exist for nominal variables (factors) at every conceivable value. Variable values without examples may cause issues for some procedures.
 
--   Ensure that examples exist for nominal variables (factors) at every conceivable value. Variable values without examples may cause issues for some procedures. Droplevels and Factor can be used to drop empty levels.
+-   Sampling in 'train' might create a sample that does not contain examples for all values in a nominal (factor) variable. You will get an error message. This most likely happens for variables which have one very rare value.
 
--   Sampling in train might create a sample that does not contain examples for all values in a nominal (factor) variable. You will get an error message. This most likely happens for variables which have one very rare value. You may have to remove the variable.
+## **Model Comparison** 
 
-## **Model Comparison**
-
--   A k-nearest neighbors (kNN) classifier and decision trees will be compared. We'll design a fixed sampling technique with ten folds so that we can compare the various models using precisely the same folds. Throughout training, it is designated as trControl.
+-   In the model comparison we will now use k-nearest (KNN) classifier and we will compare it with decision tree taking into consideration 10 folds (k=10).
 
     ```{r}
     train_index <- createFolds(spammer_train$yesno, k = 10)
@@ -329,10 +327,6 @@ fit
             trControl = trainControl(method = "cv", indexOut = train_index)
       )
     ```
-
-<!-- -->
-
--   **Note:** We instruct the train to scale the data for kNN by setting preProcess = "scale". For calculating Euclidean distance, logical will be utilized as 0--1 variables.
 
     ```{r}
     knnFit <- spammer_train |> 
@@ -367,9 +361,9 @@ fit
 
 <!-- -->
 
--   We observe that, with a few exception folds, kNN consistently outperforms CART on the folds.
+-   From the above plot we observe that, KNN is performing similar to CART.
 
--   Determine which model is statistically superior to the other (i.e., whether the accuracy difference is non-zero).
+-   Comparing which model is statistically superior to the other.
 
     ```{r}
     difs <- diff(resamps)
@@ -382,7 +376,7 @@ fit
 
 #### **Feature Selection and Feature Preparation**
 
--   Although features for splitting are chosen implicitly by decision trees, features can also be chosen explicitly.
+-   Decision trees implicitly select features for splitting, but we can also select features manually.
 
     ```{r}
     library(FSelector)
@@ -390,7 +384,7 @@ fit
 
 ### **Univariate Feature Importance Score**
 
--   Each feature's relationship to the class variable is gauged by these scores. The chi-square statistic can be used to get a score for discrete features, like ours.
+-   The chi-square statistic can be used to get a score for discrete features.
 
     ```{r}
     weights <- spammer_train |> 
@@ -411,13 +405,15 @@ fit
 
 <!-- -->
 
--   Get the 5 best features
+-   The 5 best features
 
     ```{r}
     subset <- cutoff.k(weights |> 
                        column_to_rownames("feature"), 5)
     subset
     ```
+
+-   Building a model using the best features
 
     ```{r}
     f <- as.simple.formula(subset, "yesno")
@@ -429,8 +425,6 @@ fit
     rpart.plot(m, extra = 2, roundint = FALSE)
     ```
 
--   Numerous other methods exist for determining univariate significance scores (see to package FSelector). A few of them (as well) are employed by continuous features. One illustration is the decision tree induction process's information gain ratio, which is based on entropy.
-
     ```{r}
     spammer_train |> 
       gain.ratio(yesno ~ ., data = _) |>
@@ -440,14 +434,14 @@ fit
 
 ### **Feature Subset Selection**
 
--   Features are frequently connected, hence it is not ideal to determine each feature's relevance separately. Greedy search heuristics are one option. CFS, for instance, combines best first search with correlation and entropy.
+-   Features in a dataset are interconnected, and determining their importance individually might not provide us with best results. This is considered as an issue and to address this issues we implement heuristic methods such as greedy search algorithm. One of the method is CFS, which combines the best fit search approach with correlation and entropy for feature selection.
 
     ```{r}
     spammer_train |> 
       cfs(yesno ~ ., data = _)
     ```
 
--   Black-box feature selection computes a score that should be maximized using an evaluator function known as the "black box." Initially, we establish an assessment function that constructs a model based on a subset of features and determines a quality rating. Here, the average is calculated across five bootstrap samples (method = "cv" can also be used), with no tuning used to speed up the process, and the average accuracy is used as the score.
+-   Black-box feature selection computes a score that should be maximized using an evaluator function known as the "black box." Initially, we establish an assessment function that constructs a model based on a subset of features and determines a quality score. Here, the average is calculated across 5 bootstrap samples (method = "cv" can also be used), with no tuning used to speed up the process, and the average accuracy is used as the score.
 
     ```{r}
     evaluator <- function(subset) {
@@ -479,7 +473,7 @@ fit
 
 ### **Using Dummy Variables for Factors**
 
--   Typically, a set of 0--1 dummy variables is used to encode nominal properties, also known as factors. For illustration, let's attempt to determine whether an animal is a predator based on its type. Initially, we employ the type's original encoding as a factor with several values.
+-   In this case we will try to find if the email is spam or not with reference to money.
 
     ```{r}
     money_pred <- spammer_train |> 
@@ -518,7 +512,7 @@ fit
 
 ## **Class Imbalance**
 
--   It is difficult for classifiers to learn from data when there are a lot more observations for one class (referred to as the majority class). We refer to this as the class imbalance issue.
+-   Whenever we have more observations for one class imbalance problem arises.
 
     ```{r}
     library(rpart)
@@ -534,7 +528,7 @@ fit
     ggplot(spammer, aes(y = yesno)) + geom_bar()
     ```
 
--   To create an imbalanced problem, we want to decide if an mail is a spam. First, we change the class variable to make it into a binary yes/no spam classification problem. **Note:** We use here the training data for testing. You should use a separate testing data set!
+-   As there is no imbalance problem, we can either generate one or else we can deal with it in the following manner.
 
     ```{r}
     spammer_yes <- spammer |> 
@@ -547,7 +541,7 @@ fit
     summary(spammer_yes)
     ```
 
--   Produce training and test data. To ensure that the test set has some samples of the uncommon reptile class, I employ a 50/50 split in this instance.r
+-   Creating training and test data by splitting.
 
     ```{r}
     ggplot(spammer_yes, aes(y = type)) + geom_bar()
@@ -585,11 +579,11 @@ confusionMatrix(data = predict(fit, training_yes),
                 ref = factor(training_yes$yesno))
 ```
 
--   Although kappa is zero and accuracy is high, they are exactly the same as the no-information rate. Additionally, we do not detect any positive (reptile) signals because the sensitivity is zero. The cost of misclassifying a negative is far more than the cost of missing a positive, hence accuracy is not a useful metric! We aim to boost sensitivity, or the likelihood of identifying favorable examples, rather than accuracy, which is why we are addressing imbalance.
+-   Although kappa is 0.6922 and accuracy is 0.8561. Additionally, we can detect some positive (reptile) signals because the sensitivity is 0.9211.
 
 ### **Option 2: Balance Data With Resampling**
 
--   We oversample the minority/positive class by using stratified sampling with replacement. Other sampling techniques (like those in package imbalanced) or SMOTE (found in package DMwR) are other options. 50+50 observations are used in this case (note that several samples will be selected more than once).
+-   We employ stratified sampling with replacement to oversample the minority or positive class. Alternatively, methods like SMOTE (available in the DMwR package) or other sampling strategies (such as those from the unbalanced package) can be utilized. In this scenario, we select 50 observations from each class, and it's important to note that many samples might be chosen multiple times during the process.
 
     ```{r}
     library(sampling)
@@ -627,7 +621,7 @@ confusionMatrix(data = predict(fit, training_yes),
     fit
     ```
 
--   The sample proportions can be used to manage the tradeoff between sensitivity and specificity, or how many of the identified animals are actually reptiles. Since there are fewer reptiles in the test set, we can sample more of them to boost sensitivity at the expense of decreased specificity. This effect is not evident in the data.
+-   The sample proportions can be used to manage the tradeoff between sensitivity and specificity, or how many emails are actually spams. Since there are fewer spams in the test set, we can sample more of them to boost sensitivity at the expense of decreased specificity. This effect is not evident in the data.
 
     ```{r}
     id <- strata(training_yes, stratanames = "yesno", size = c(50, 100), method = "srswr")
@@ -650,7 +644,7 @@ confusionMatrix(data = predict(fit, training_yes),
 
 ### **Option 3: Build A Larger Tree and use Predicted Probabilities**
 
--   In order to split a node, add complexity while using fewer data. Here, the tuning metric that I also use is AUC, or area under the ROC. It is necessary to designate the two class summary functions. Keep in mind that the tree is still aiming for data accuracy rather than AUC! Because I wish to estimate probabilities later, I also activate class probabilities.
+-   Fewer data is required to split a node by enhancing the complexity. Here, the tuning metric that I also use is AUC (area under the ROC Curve). Additionally, I enable class probabilities as I intend to predict probabilities in subsequent stages.
 
     ```{r}
     fit <- training_yes |> 
@@ -680,7 +674,7 @@ confusionMatrix(data = predict(fit, training_yes),
 
 #### Create A Biased Classifier
 
--   A classifier that misclassifies non-reptiles in order to detect more reptiles can be developed. Increasing the cost of incorrectly identifying a reptile as non-reptile is the equivalent of this. The standard protocol is to use the test data in each node to estimate the majority class. It denotes a probability of greater than 50% in a binary classification task. We drop this cutoff to 1% or higher in the subsequent sections. As a result, the new observation will be categorized as a reptile if it finds itself at a leaf node that contains 1% or more reptiles from the training set. This is more effective with more data because the data set is tiny.
+-   A classifier that misclassifies "no" in order to detect more "yes" can be developed. Increasing the cost of incorrectly identifying a yes as a no is the equivalent of this. The standard protocol is to use the test data in each node to estimate the majority class. It denotes a probability of greater than 50% in a binary classification task. We drop this cutoff to 1% or higher in the subsequent sections. As a result, the new observation will be categorized as a yes if it finds itself at a leaf node that contains 1% or more yes from the training set. This is more effective with more data because the data set is small.
 
     ```{r}
     prob <- predict(fit, testing_yes, type = "prob")
@@ -696,7 +690,7 @@ confusionMatrix(data = predict(fit, training_yes),
 
 #### Plot the ROC Curve
 
--   We can also use a receiver operating characteristic (ROC) curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a reptile. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).
+-   We can also use a **Receiver Operating Characteristic (ROC)** curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a yes. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).
 
     ```{r}
     library("pROC")
@@ -713,7 +707,7 @@ confusionMatrix(data = predict(fit, training_yes),
 
 ### **Option 4: Use a Cost-Sensitive Classifier**
 
--   We can also use a receiver operating characteristic (ROC) curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a reptile. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).
+-   The implementation of CART in \`rpart\` can use a cost matrix for making splitting decisions (as parameter \`loss\`). The matrix has the form: TP FP FN TN, having both TP and TN as 0.
 
     ```{r}
     cost <- matrix(c(
@@ -745,7 +739,7 @@ confusionMatrix(data = predict(fit, training_yes),
                     ref = factor(testing_yes$yesno))
     ```
 
--   A classifier that does not miss any reptiles is produced by the high cost of false negatives.
+-   A classifier that does not miss any yes is produced by the high cost of false negatives.
 
 # **Classification: Alternative Techniques**
 
@@ -784,9 +778,11 @@ options(digits=3)
 
 ## Introduction
 
-The literature has several different categorization algorithms proposed. Some of the more widely used techniques will be used in this chapter.
+Now we will be using some classification algorithms.
 
 ## **Training and Test Data**
+
+Using Spam Email Dataset.
 
 ```{r}
 spammer <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-15/spam.csv')
@@ -803,11 +799,11 @@ spammer_test <- dplyr::slice(spammer, -inTrain)
 
 ## **Fitting Different Classification Models to the Training Data**
 
+Creating a fixed sampling scheme having 10-folds to compare the fitted models in the future.
+
 ```{r}
 train_index <- createFolds(spammer_train$yesno, k = 10)
 ```
-
-**Note**: If your data has a lot of NA values, proceed with caution. In certain situations, cross-validation and train() may fail. If so, you can either eliminate features (columns) with a high number of NAs, use na.delete() to omit NAs, or utilize imputation to replace NAs with appropriate values (e.g., using the feature mean or by kNN). Extremely unbalanced datasets are problematic as well because it is possible for a fold to lack examples for every class, which could result in an illegible error message.
 
 ### **Conditional Inference Tree (Decision Tree)**
 
@@ -841,7 +837,7 @@ C45Fit$finalModel
 
 ### **K-Nearest Neighbors**
 
-Since kNN uses Euclidean distance, the data must first be scaled or standardized. In this case, all other variables are measured between 0 and 1, and legs are measured between 0 and 6. Scaling can be done immediately in train by using the preProcess = "scale" parameter for preprocessing.
+Since kNN uses Euclidean distance, the data must first be scaled or standardized. Scaling can be done immediately in "**train**" by using the **preProcess = "scale"** parameter for preprocessing.
 
 ```{r warning=FALSE}
 knnFit <- spammer_train |> train(yesno ~ .,
@@ -875,6 +871,8 @@ rulesFit$finalModel
 
 ### **Linear Support Vector Machines**
 
+Linear Support Vector Machines (SVM) are a type of supervised machine learning algorithm used for classification and regression tasks.
+
 ```{r warning=FALSE}
 svmFit <- spammer_train |> train(yesno ~.,
   method = "svmLinear",
@@ -890,6 +888,8 @@ svmFit$finalModel
 
 ### **Random Forest**
 
+Random Forest is an ensemble learning method used for both classification and regression tasks. It operates by constructing a multitude of decision trees during training and outputs the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees.
+
 ```{r warning=FALSE}
 randomForestFit <- spammer_train |> train(yesno ~ .,
   method = "rf",
@@ -904,6 +904,8 @@ randomForestFit$finalModel
 ```
 
 ### **Gradient Boosted Decision Trees (xgboost)**
+
+XGBoost, short for eXtreme Gradient Boosting, is an optimized and scalable implementation of gradient boosting machines. It's a machine learning algorithm that belongs to the family of ensemble learning methods. Specifically, XGBoost is used for both classification and regression tasks, and it is known for its speed and performance.
 
 ```{r warning=FALSE}
 xgboostFit <- spammer_train |> train(yesno ~ .,
@@ -929,6 +931,8 @@ xgboostFit$finalModel
 
 ### **Artificial Neural Network**
 
+Artificial Neural Networks (ANNs) are computational models inspired by the way biological neural networks in the human brain work. ANNs are used in machine learning and artificial intelligence for various tasks, including classification, regression, pattern recognition, and decision making.
+
 ```{r warning=FALSE}
 nnetFit <- spammer_train |> train(yesno ~ .,
   method = "nnet",
@@ -945,7 +949,7 @@ nnetFit$finalModel
 
 ## Comparing Models
 
--   Collect the performance metrics from the models trained on the same data.
+-   Collecting the performance metrics from the models trained on the same data.
 
     ```{r warning=FALSE}
     resamps <- resamples(list(
@@ -970,7 +974,7 @@ nnetFit$finalModel
     bwplot(resamps, layout = c(3, 1))
     ```
 
--   Make an inference regarding model differences. Every pair-wise difference for every statistic is calculated and verified to see if it equals zero. For multiple comparisons, the Bonferroni correction is applied by default. P-values are located in the lower triangle and differences are displayed in the upper triangle.
+-   Analysis to compare differences between models. It involves computing and testing all possible pairwise differences for each metric to determine whether the differences are significant.The method used for handling multiple comparisons is Bonferroni correction.
 
     ```{r}
     difs <- diff(resamps)
@@ -1075,7 +1079,7 @@ decisionplot <- function(model, data, class_var,
 
 ### **Penguins Dataset**
 
--   We utilize two of the penguins dataset's dimensions for simpler display. On a map, contour lines represent the density like mountains.
+-   We utilize two of the penguins dataset's dimensions for simple display. On a map, contour lines represent the density like mountains.
 
 ```{r warning=FALSE}
 set.seed(1000)
@@ -1101,6 +1105,8 @@ ggplot(x, aes(x = bill_length_mm, y = bill_depth_mm, fill = species)) +
 ```
 
 #### K-Nearest Neighbors Classifier
+
+K-Nearest Neighbors (KNN) is a simple, instance-based, and non-parametric machine learning algorithm used for both classification and regression tasks.
 
 ```{r warning=FALSE}
 model <- x |> caret::knn3(species ~ ., data = _, k = 1)

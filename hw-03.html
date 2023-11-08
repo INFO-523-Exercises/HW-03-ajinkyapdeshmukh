@@ -263,7 +263,7 @@ node), split, n, loss, yval, (yprob)
 <section id="create-a-full-tree" class="level3">
 <h3 class="anchored" data-anchor-id="create-a-full-tree"><strong>Create a Full Tree</strong></h3>
 <ul>
-<li><p>In order to produce a complete tree, we set the minimum number of observations in a node required to split to the least value of 2 and set the complexity parameter cp to 0 (split even if it does not improve the tree). Take note: training data was overfit by entire trees!</p>
+<li><p>In order to produce a complete tree, we set the minimum number of observations in a node required to split to the least value of 2 and set the complexity parameter cp to 0 (split even if it does not improve the tree).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tree_full <span class="ot">&lt;-</span> spammer <span class="sc">|&gt;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(yesno <span class="sc">~</span> . , <span class="at">data =</span> _,</span>
@@ -1409,7 +1409,7 @@ Levels: n y</code></pre>
 <section id="model-evaluation-with-caret" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation-with-caret"><strong>Model Evaluation with Caret:</strong></h2>
 <ul>
-<li><p>Preparing training sets, creating classification (and regression) models, and conducting evaluations are all made simpler by the package caret. This is an excellent cheat sheet.</p>
+<li><p>Preparing training sets, creating classification (and regression) models, and conducting evaluations are all made simpler by the package caret.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1431,7 +1431,7 @@ Levels: n y</code></pre>
 <section id="hold-out-test-data" class="level4">
 <h4 class="anchored" data-anchor-id="hold-out-test-data">Hold out Test Data</h4>
 <ul>
-<li><p>Test data is kept separate and used just for model testing; it is not utilized throughout the model-building process. Here, we divide the data into 20% for testing and 80% for training.</p>
+<li><p>Test data is kept separate and used just for model testing; it is not utilized throughout the model-building process. Here, we are dividing the data into 80% for training and 20% for testing.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(spammer<span class="sc">$</span>yesno)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1450,7 +1450,7 @@ Levels: n y</code></pre>
 </section>
 <section id="learn-a-model-and-tune-hyperparameters-on-the-training-data" class="level3">
 <h3 class="anchored" data-anchor-id="learn-a-model-and-tune-hyperparameters-on-the-training-data"><strong>Learn a Model and Tune Hyperparameters on the Training Data</strong></h3>
-<p>A single method called train() from the caret package handles both training and validation for hyperparameter adjustment. It will provide you error estimates for various hyperparameter settings by internally dividing the data into training and validation sets. TrainControl is used to select the testing strategy.</p>
+<p>A single method called <strong>train()</strong> from the <strong>caret</strong> package handles both training and validation for hyperparameter adjustment. It will provide you error estimates for various hyperparameter settings by internally dividing the data into training and validation sets. <strong>trainControl</strong> is used to select the testing strategy.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
@@ -1485,7 +1485,7 @@ The final value used for the model was cp = 0.005513439.</code></pre>
 </div>
 </div>
 <ul>
-<li><p>Fit$finalModel is a model that makes use of all the data provided to train() and the optimal tuning parameters.</p>
+<li><p><strong>fit$finalModel</strong> is a model that makes use of all the data provided to <strong>train()</strong> and the optimal tuning parameters.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>,</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">box.palette =</span> <span class="fu">list</span>(<span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1567,7 +1567,7 @@ n000      0.000</code></pre>
 Levels: n y</code></pre>
 </div>
 </div></li>
-<li><p>Accuracy, confidence intervals, kappa, and numerous other evaluation metrics can be computed using Caret’s confusionMatrix() method. A confusion matrix based on the generalization error must be created using distinct test data.</p>
+<li><p>“<strong>confusionMatrix()</strong>” function allows us to compute accuracy, confidence intervals, kappa, and numerous other evaluation metrics.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred, </span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">ref =</span> spammer_test <span class="sc">|&gt;</span> <span class="fu">pull</span>(yesno))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1602,17 +1602,16 @@ Prediction   n   y
 </div>
 </div>
 <h4 id="some-notes" class="anchored"><strong>Some notes</strong></h4></li>
-<li><p>Missing values are a problem for many classification algorithms and train in caret. Use na.action = na.pass when calling train and predict if your classification model can handle missing values (e.g., rpart). If not, before training the model, you must use na.omit to delete observations with missing values or imputation to replace the missing values. Verify if there are still sufficient observations available.</p></li>
-<li><p>Ensure that variables that are nominal, such as logical variables, are coded as factors.</p></li>
-<li><p>R keywords, such as TRUE and FALSE, cannot appear in the level names of the class variable for train in Caret. Change their name to something like “yes” and “no.”</p></li>
-<li><p>Ensure that examples exist for nominal variables (factors) at every conceivable value. Variable values without examples may cause issues for some procedures. Droplevels and Factor can be used to drop empty levels.</p></li>
-<li><p>Sampling in train might create a sample that does not contain examples for all values in a nominal (factor) variable. You will get an error message. This most likely happens for variables which have one very rare value. You may have to remove the variable.</p></li>
+<li><p>Several classification algorithms in caret do not handle missing values effectively. If your classification model can handle missing values (such as rpart), use ‘na.action = na.pass’ when calling the ‘train’ and ‘predict’ functions. Otherwise, you should either remove observations with missing values using ‘na.omit’ or use imputation techniques to replace missing values before training the model. It’s essential to ensure that you retain a sufficient number of observations after handling missing values.</p></li>
+<li><p>Additionally, nominal variables, including logical variables, should be coded as factors. The class variable for ‘train’ in caret must not have level names that are reserved keywords in R (e.g., TRUE and FALSE). Consider renaming them, for instance, to ‘yes’ and ‘no.’</p></li>
+<li><p>Ensure that examples exist for nominal variables (factors) at every conceivable value. Variable values without examples may cause issues for some procedures.</p></li>
+<li><p>Sampling in ‘train’ might create a sample that does not contain examples for all values in a nominal (factor) variable. You will get an error message. This most likely happens for variables which have one very rare value.</p></li>
 </ul>
 </section>
 <section id="model-comparison" class="level2">
 <h2 class="anchored" data-anchor-id="model-comparison"><strong>Model Comparison</strong></h2>
 <ul>
-<li><p>A k-nearest neighbors (kNN) classifier and decision trees will be compared. We’ll design a fixed sampling technique with ten folds so that we can compare the various models using precisely the same folds. Throughout training, it is designated as trControl.</p>
+<li><p>In the model comparison we will now use k-nearest (KNN) classifier and we will compare it with decision tree taking into consideration 10 folds (k=10).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(spammer_train<span class="sc">$</span>yesno, <span class="at">k =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
@@ -1628,11 +1627,7 @@ Prediction   n   y
 <span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">tuneLength =</span> <span class="dv">10</span>,</span>
 <span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">indexOut =</span> train_index)</span>
 <span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-</ul>
-<!-- -->
-<ul>
-<li><p><strong>Note:</strong> We instruct the train to scale the data for kNN by setting preProcess = “scale”. For calculating Euclidean distance, logical will be utilized as 0–1 variables.</p>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>knnFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> </span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
@@ -1690,8 +1685,8 @@ kNearestNeighbors    0</code></pre>
 </ul>
 <!-- -->
 <ul>
-<li><p>We observe that, with a few exception folds, kNN consistently outperforms CART on the folds.</p></li>
-<li><p>Determine which model is statistically superior to the other (i.e., whether the accuracy difference is non-zero).</p>
+<li><p>From the above plot we observe that, KNN is performing similar to CART.</p></li>
+<li><p>Comparing which model is statistically superior to the other.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>difs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1732,7 +1727,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <section id="feature-selection-and-feature-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="feature-selection-and-feature-preparation"><strong>Feature Selection and Feature Preparation</strong></h4>
 <ul>
-<li><p>Although features for splitting are chosen implicitly by decision trees, features can also be chosen explicitly.</p>
+<li><p>Decision trees implicitly select features for splitting, but we can also select features manually.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FSelector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
@@ -1741,7 +1736,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <section id="univariate-feature-importance-score" class="level3">
 <h3 class="anchored" data-anchor-id="univariate-feature-importance-score"><strong>Univariate Feature Importance Score</strong></h3>
 <ul>
-<li><p>Each feature’s relationship to the class variable is gauged by these scores. The chi-square statistic can be used to get a score for discrete features, like ours.</p>
+<li><p>The chi-square statistic can be used to get a score for discrete features.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> </span>
 <span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chi.squared</span>(yesno <span class="sc">~</span> ., <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
@@ -1774,7 +1769,7 @@ kNearestNeighbors 0.595                  </code></pre>
 </ul>
 <!-- -->
 <ul>
-<li><p>Get the 5 best features</p>
+<li><p>The 5 best features</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> <span class="fu">cutoff.k</span>(weights <span class="sc">|&gt;</span> </span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">column_to_rownames</span>(<span class="st">"feature"</span>), <span class="dv">5</span>)</span>
@@ -1782,13 +1777,14 @@ kNearestNeighbors 0.595                  </code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "bang"    "dollar"  "money"   "crl.tot" "n000"   </code></pre>
 </div>
-</div>
+</div></li>
+<li><p>Building a model using the best features</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">as.simple.formula</span>(subset, <span class="st">"yesno"</span>)</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>yesno ~ bang + dollar + money + crl.tot + n000
-&lt;environment: 0x15dbd2668&gt;</code></pre>
+&lt;environment: 0x13a122ec8&gt;</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1797,8 +1793,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <div class="cell-output-display">
 <p><img src="hw-03_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="672"></p>
 </div>
-</div></li>
-<li><p>Numerous other methods exist for determining univariate significance scores (see to package FSelector). A few of them (as well) are employed by continuous features. One illustration is the decision tree induction process’s information gain ratio, which is based on entropy.</p>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>spammer_train <span class="sc">|&gt;</span> </span>
 <span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gain.ratio</span>(yesno <span class="sc">~</span> ., <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
@@ -1821,7 +1816,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <section id="feature-subset-selection" class="level3">
 <h3 class="anchored" data-anchor-id="feature-subset-selection"><strong>Feature Subset Selection</strong></h3>
 <ul>
-<li><p>Features are frequently connected, hence it is not ideal to determine each feature’s relevance separately. Greedy search heuristics are one option. CFS, for instance, combines best first search with correlation and entropy.</p>
+<li><p>Features in a dataset are interconnected, and determining their importance individually might not provide us with best results. This is considered as an issue and to address this issues we implement heuristic methods such as greedy search algorithm. One of the method is CFS, which combines the best fit search approach with correlation and entropy for feature selection.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>spammer_train <span class="sc">|&gt;</span> </span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cfs</span>(yesno <span class="sc">~</span> ., <span class="at">data =</span> _)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1829,7 +1824,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <pre><code>[1] "dollar" "bang"   "money"  "n000"  </code></pre>
 </div>
 </div></li>
-<li><p>Black-box feature selection computes a score that should be maximized using an evaluator function known as the “black box.” Initially, we establish an assessment function that constructs a model based on a subset of features and determines a quality rating. Here, the average is calculated across five bootstrap samples (method = “cv” can also be used), with no tuning used to speed up the process, and the average accuracy is used as the score.</p>
+<li><p>Black-box feature selection computes a score that should be maximized using an evaluator function known as the “black box.” Initially, we establish an assessment function that constructs a model based on a subset of features and determines a quality score. Here, the average is calculated across 5 bootstrap samples (method = “cv” can also be used), with no tuning used to speed up the process, and the average accuracy is used as the score.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>evaluator <span class="ot">&lt;-</span> <span class="cf">function</span>(subset) {</span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> </span>
@@ -1860,7 +1855,7 @@ kNearestNeighbors 0.595                  </code></pre>
 <section id="using-dummy-variables-for-factors" class="level3">
 <h3 class="anchored" data-anchor-id="using-dummy-variables-for-factors"><strong>Using Dummy Variables for Factors</strong></h3>
 <ul>
-<li><p>Typically, a set of 0–1 dummy variables is used to encode nominal properties, also known as factors. For illustration, let’s attempt to determine whether an animal is a predator based on its type. Initially, we employ the type’s original encoding as a factor with several values.</p>
+<li><p>In this case we will try to find if the email is spam or not with reference to money.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>money_pred <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> </span>
 <span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart</span>(money <span class="sc">~</span> yesno, <span class="at">data =</span> _)</span>
@@ -1938,7 +1933,7 @@ Tuning parameter 'cp' was held constant at a value of 0.01</code></pre>
 <section id="class-imbalance" class="level2">
 <h2 class="anchored" data-anchor-id="class-imbalance"><strong>Class Imbalance</strong></h2>
 <ul>
-<li><p>It is difficult for classifiers to learn from data when there are a lot more observations for one class (referred to as the majority class). We refer to this as the class imbalance issue.</p>
+<li><p>Whenever we have more observations for one class imbalance problem arises.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
 <span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
@@ -1964,7 +1959,7 @@ dbl (6): crl.tot, dollar, bang, money, n000, make
 <p><img src="hw-03_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
 </div>
 </div></li>
-<li><p>To create an imbalanced problem, we want to decide if an mail is a spam. First, we change the class variable to make it into a binary yes/no spam classification problem. <strong>Note:</strong> We use here the training data for testing. You should use a separate testing data set!</p>
+<li><p>As there is no imbalance problem, we can either generate one or else we can deal with it in the following manner.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>spammer_yes <span class="ot">&lt;-</span> spammer <span class="sc">|&gt;</span> </span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">factor</span>(spammer<span class="sc">$</span>yesno <span class="sc">==</span> <span class="st">"yes"</span>, </span>
@@ -1990,7 +1985,7 @@ dbl (6): crl.tot, dollar, bang, money, n000, make
  Max.   :5.4500   Max.   :4.5400                                   </code></pre>
 </div>
 </div></li>
-<li><p>Produce training and test data. To ensure that the test set has some samples of the uncommon reptile class, I employ a 50/50 split in this instance.r</p>
+<li><p>Creating training and test data by splitting.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(spammer_yes, <span class="fu">aes</span>(<span class="at">y =</span> type)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2078,13 +2073,13 @@ Prediction    n    y
 </div>
 </div>
 <ul>
-<li>Although kappa is zero and accuracy is high, they are exactly the same as the no-information rate. Additionally, we do not detect any positive (reptile) signals because the sensitivity is zero. The cost of misclassifying a negative is far more than the cost of missing a positive, hence accuracy is not a useful metric! We aim to boost sensitivity, or the likelihood of identifying favorable examples, rather than accuracy, which is why we are addressing imbalance.</li>
+<li>Although kappa is 0.6922 and accuracy is 0.8561. Additionally, we can detect some positive (reptile) signals because the sensitivity is 0.9211.</li>
 </ul>
 </section>
 <section id="option-2-balance-data-with-resampling" class="level3">
 <h3 class="anchored" data-anchor-id="option-2-balance-data-with-resampling"><strong>Option 2: Balance Data With Resampling</strong></h3>
 <ul>
-<li><p>We oversample the minority/positive class by using stratified sampling with replacement. Other sampling techniques (like those in package imbalanced) or SMOTE (found in package DMwR) are other options. 50+50 observations are used in this case (note that several samples will be selected more than once).</p>
+<li><p>We employ stratified sampling with replacement to oversample the minority or positive class. Alternatively, methods like SMOTE (available in the DMwR package) or other sampling strategies (such as those from the unbalanced package) can be utilized. In this scenario, we select 50 observations from each class, and it’s important to note that many samples might be chosen multiple times during the process.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sampling)</span>
 <span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>) <span class="co"># for repeatability</span></span>
@@ -2192,7 +2187,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was cp = 0.</code></pre>
 </div>
 </div></li>
-<li><p>The sample proportions can be used to manage the tradeoff between sensitivity and specificity, or how many of the identified animals are actually reptiles. Since there are fewer reptiles in the test set, we can sample more of them to boost sensitivity at the expense of decreased specificity. This effect is not evident in the data.</p>
+<li><p>The sample proportions can be used to manage the tradeoff between sensitivity and specificity, or how many emails are actually spams. Since there are fewer spams in the test set, we can sample more of them to boost sensitivity at the expense of decreased specificity. This effect is not evident in the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_yes, <span class="at">stratanames =</span> <span class="st">"yesno"</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">method =</span> <span class="st">"srswr"</span>)</span>
 <span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>training_yes_balanced <span class="ot">&lt;-</span> training_yes <span class="sc">|&gt;</span> </span>
@@ -2249,7 +2244,7 @@ Prediction    n    y
 <section id="option-3-build-a-larger-tree-and-use-predicted-probabilities" class="level3">
 <h3 class="anchored" data-anchor-id="option-3-build-a-larger-tree-and-use-predicted-probabilities"><strong>Option 3: Build A Larger Tree and use Predicted Probabilities</strong></h3>
 <ul>
-<li><p>In order to split a node, add complexity while using fewer data. Here, the tuning metric that I also use is AUC, or area under the ROC. It is necessary to designate the two class summary functions. Keep in mind that the tree is still aiming for data accuracy rather than AUC! Because I wish to estimate probabilities later, I also activate class probabilities.</p>
+<li><p>Fewer data is required to split a node by enhancing the complexity. Here, the tuning metric that I also use is AUC (area under the ROC Curve). Additionally, I enable class probabilities as I intend to predict probabilities in subsequent stages.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_yes <span class="sc">|&gt;</span> </span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
@@ -2335,7 +2330,7 @@ Prediction    n    y
 <section id="create-a-biased-classifier" class="level4">
 <h4 class="anchored" data-anchor-id="create-a-biased-classifier">Create A Biased Classifier</h4>
 <ul>
-<li><p>A classifier that misclassifies non-reptiles in order to detect more reptiles can be developed. Increasing the cost of incorrectly identifying a reptile as non-reptile is the equivalent of this. The standard protocol is to use the test data in each node to estimate the majority class. It denotes a probability of greater than 50% in a binary classification task. We drop this cutoff to 1% or higher in the subsequent sections. As a result, the new observation will be categorized as a reptile if it finds itself at a leaf node that contains 1% or more reptiles from the training set. This is more effective with more data because the data set is tiny.</p>
+<li><p>A classifier that misclassifies “no” in order to detect more “yes” can be developed. Increasing the cost of incorrectly identifying a yes as a no is the equivalent of this. The standard protocol is to use the test data in each node to estimate the majority class. It denotes a probability of greater than 50% in a binary classification task. We drop this cutoff to 1% or higher in the subsequent sections. As a result, the new observation will be categorized as a yes if it finds itself at a leaf node that contains 1% or more yes from the training set. This is more effective with more data because the data set is small.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, testing_yes, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2389,7 +2384,7 @@ Prediction    n    y
 <section id="plot-the-roc-curve" class="level4">
 <h4 class="anchored" data-anchor-id="plot-the-roc-curve">Plot the ROC Curve</h4>
 <ul>
-<li><p>We can also use a receiver operating characteristic (ROC) curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a reptile. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).</p>
+<li><p>We can also use a <strong>Receiver Operating Characteristic (ROC)</strong> curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a yes. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"pROC"</span>)</span>
 <span id="cb137-2"><a href="#cb137-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">roc</span>(testing_yes<span class="sc">$</span>yesno <span class="sc">==</span> <span class="st">"y"</span>, prob[,<span class="st">"y"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2423,7 +2418,7 @@ Area under the curve: 0.8926</code></pre>
 <section id="option-4-use-a-cost-sensitive-classifier" class="level3">
 <h3 class="anchored" data-anchor-id="option-4-use-a-cost-sensitive-classifier"><strong>Option 4: Use a Cost-Sensitive Classifier</strong></h3>
 <ul>
-<li><p>We can also use a receiver operating characteristic (ROC) curve because we have a binary classification problem and a classifier that predicts a probability that an observation is a reptile. Every possible cutoff criterion for the probability is utilized to create the ROC curve, which is then joined by a line. A single value that indicates how well the classifier performs is represented by the area under the curve (the closer to one, the better).</p>
+<li><p>The implementation of CART in `rpart` can use a cost matrix for making splitting decisions (as parameter `loss`). The matrix has the form: TP FP FN TN, having both TP and TN as 0.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
 <span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">1</span>,</span>
@@ -2506,7 +2501,7 @@ Prediction    n    y
 </code></pre>
 </div>
 </div></li>
-<li><p>A classifier that does not miss any reptiles is produced by the high cost of false negatives.</p></li>
+<li><p>A classifier that does not miss any yes is produced by the high cost of false negatives.</p></li>
 </ul>
 </section>
 </section>
@@ -2546,10 +2541,11 @@ Prediction    n    y
 </section>
 <section id="introduction-1" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-1">Introduction</h2>
-<p>The literature has several different categorization algorithms proposed. Some of the more widely used techniques will be used in this chapter.</p>
+<p>Now we will be using some classification algorithms.</p>
 </section>
 <section id="training-and-test-data" class="level2">
 <h2 class="anchored" data-anchor-id="training-and-test-data"><strong>Training and Test Data</strong></h2>
+<p>Using Spam Email Dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>spammer <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-15/spam.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -2585,10 +2581,10 @@ $ yesno   &lt;chr&gt; "y", "y", "y", "y", "y", "y", "y", "y", "y", "y", "y", "y"
 </section>
 <section id="fitting-different-classification-models-to-the-training-data" class="level2">
 <h2 class="anchored" data-anchor-id="fitting-different-classification-models-to-the-training-data"><strong>Fitting Different Classification Models to the Training Data</strong></h2>
+<p>Creating a fixed sampling scheme having 10-folds to compare the fitted models in the future.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(spammer_train<span class="sc">$</span>yesno, <span class="at">k =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Note</strong>: If your data has a lot of NA values, proceed with caution. In certain situations, cross-validation and train() may fail. If so, you can either eliminate features (columns) with a high number of NAs, use na.delete() to omit NAs, or utilize imputation to replace NAs with appropriate values (e.g., using the feature mean or by kNN). Extremely unbalanced datasets are problematic as well because it is possible for a fold to lack examples for every class, which could result in an illegible error message.</p>
 <section id="conditional-inference-tree-decision-tree" class="level3">
 <h3 class="anchored" data-anchor-id="conditional-inference-tree-decision-tree"><strong>Conditional Inference Tree (Decision Tree)</strong></h3>
 <div class="cell">
@@ -2811,7 +2807,7 @@ Size of the tree :  117</code></pre>
 </section>
 <section id="k-nearest-neighbors" class="level3">
 <h3 class="anchored" data-anchor-id="k-nearest-neighbors"><strong>K-Nearest Neighbors</strong></h3>
-<p>Since kNN uses Euclidean distance, the data must first be scaled or standardized. In this case, all other variables are measured between 0 and 1, and legs are measured between 0 and 6. Scaling can be done immediately in train by using the preProcess = “scale” parameter for preprocessing.</p>
+<p>Since kNN uses Euclidean distance, the data must first be scaled or standardized. Scaling can be done immediately in “<strong>train</strong>” by using the <strong>preProcess = “scale”</strong> parameter for preprocessing.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>knnFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
 <span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"knn"</span>,</span>
@@ -2965,6 +2961,7 @@ Number of Rules  :  15</code></pre>
 </section>
 <section id="linear-support-vector-machines" class="level3">
 <h3 class="anchored" data-anchor-id="linear-support-vector-machines"><strong>Linear Support Vector Machines</strong></h3>
+<p>Linear Support Vector Machines (SVM) are a type of supervised machine learning algorithm used for classification and regression tasks.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>svmFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> <span class="fu">train</span>(yesno <span class="sc">~</span>.,</span>
 <span id="cb174-2"><a href="#cb174-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"svmLinear"</span>,</span>
@@ -3009,6 +3006,7 @@ Training error : 0.156437 </code></pre>
 </section>
 <section id="random-forest" class="level3">
 <h3 class="anchored" data-anchor-id="random-forest"><strong>Random Forest</strong></h3>
+<p>Random Forest is an ensemble learning method used for both classification and regression tasks. It operates by constructing a multitude of decision trees during training and outputs the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb178"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1" aria-hidden="true" tabindex="-1"></a>randomForestFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
 <span id="cb178-2"><a href="#cb178-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"rf"</span>,</span>
@@ -3059,6 +3057,7 @@ y  279 1172      0.1923</code></pre>
 </section>
 <section id="gradient-boosted-decision-trees-xgboost" class="level3">
 <h3 class="anchored" data-anchor-id="gradient-boosted-decision-trees-xgboost"><strong>Gradient Boosted Decision Trees (xgboost)</strong></h3>
+<p>XGBoost, short for eXtreme Gradient Boosting, is an optimized and scalable implementation of gradient boosting machines. It’s a machine learning algorithm that belongs to the family of ensemble learning methods. Specifically, XGBoost is used for both classification and regression tasks, and it is known for its speed and performance.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a>xgboostFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
 <span id="cb182-2"><a href="#cb182-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"xgbTree"</span>,</span>
@@ -3129,6 +3128,7 @@ param :
 </section>
 <section id="artificial-neural-network" class="level3">
 <h3 class="anchored" data-anchor-id="artificial-neural-network"><strong>Artificial Neural Network</strong></h3>
+<p>Artificial Neural Networks (ANNs) are computational models inspired by the way biological neural networks in the human brain work. ANNs are used in machine learning and artificial intelligence for various tasks, including classification, regression, pattern recognition, and decision making.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a>nnetFit <span class="ot">&lt;-</span> spammer_train <span class="sc">|&gt;</span> <span class="fu">train</span>(yesno <span class="sc">~</span> .,</span>
 <span id="cb186-2"><a href="#cb186-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"nnet"</span>,</span>
@@ -3194,7 +3194,7 @@ options were - entropy fitting  decay=0.1</code></pre>
 <section id="comparing-models" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-models">Comparing Models</h2>
 <ul>
-<li><p>Collect the performance metrics from the models trained on the same data.</p>
+<li><p>Collecting the performance metrics from the models trained on the same data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb190"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1" aria-hidden="true" tabindex="-1"></a>resamps <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(</span>
 <span id="cb190-2"><a href="#cb190-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ctree =</span> ctreeFit,</span>
@@ -3260,7 +3260,7 @@ NeuralNet    0.688   0.715  0.745 0.740   0.752 0.798    0</code></pre>
 <p><img src="hw-03_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid" width="672"></p>
 </div>
 </div></li>
-<li><p>Make an inference regarding model differences. Every pair-wise difference for every statistic is calculated and verified to see if it equals zero. For multiple comparisons, the Bonferroni correction is applied by default. P-values are located in the lower triangle and differences are displayed in the upper triangle.</p>
+<li><p>Analysis to compare differences between models. It involves computing and testing all possible pairwise differences for each metric to determine whether the differences are significant.The method used for handling multiple comparisons is Bonferroni correction.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
 <span id="cb195-2"><a href="#cb195-2" aria-hidden="true" tabindex="-1"></a>difs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3526,7 +3526,7 @@ Levels: n y</code></pre>
 <section id="penguins-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="penguins-dataset"><strong>Penguins Dataset</strong></h3>
 <ul>
-<li>We utilize two of the penguins dataset’s dimensions for simpler display. On a map, contour lines represent the density like mountains.</li>
+<li>We utilize two of the penguins dataset’s dimensions for simple display. On a map, contour lines represent the density like mountains.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>)</span>
@@ -3570,6 +3570,7 @@ Levels: n y</code></pre>
 </div>
 <section id="k-nearest-neighbors-classifier" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors-classifier">K-Nearest Neighbors Classifier</h4>
+<p>K-Nearest Neighbors (KNN) is a simple, instance-based, and non-parametric machine learning algorithm used for both classification and regression tasks.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> caret<span class="sc">::</span><span class="fu">knn3</span>(species <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">k =</span> <span class="dv">1</span>)</span>
 <span id="cb206-2"><a href="#cb206-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"species"</span>) <span class="sc">+</span> </span>
